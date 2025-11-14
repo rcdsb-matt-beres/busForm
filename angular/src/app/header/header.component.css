@@ -1,0 +1,21 @@
+.container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+    margin-bottom: 15px;
+}
+
+.container:hover {
+    cursor: pointer;
+}
+
+img {
+    height: 80px;
+    width: auto;
+}
+
+h1 {
+    font-size: 48px;
+    margin: 0;
+}

@@ -1,0 +1,186 @@
+<ng-container *ngIf="!formService.firstName.value">
+    <div class="warning">
+        <p>Please complete the Parent/Guardian Information form before proceeding to the Student Information form.</p>
+        <button type="button" (click)="goBack()">Go to Parent/Guardian Information Form</button>
+    </div>
+</ng-container>
+<ng-container *ngIf="formService.firstName.value">
+    <form id="studentForm" [formGroup]="studentForm" (ngSubmit)="onSubmit()">
+        <h2>Student Form</h2>
+        <p>Required fields are marked with asterisks (<span class="asterisk">*</span>)</p>
+        <h3>School Information</h3>
+        <p>If you have students in two or more different schools within the RCDSB, you will need to complete a separate
+            form
+            for each school. </p>
+
+        <div class="school-info">
+            <div class="question-box">
+                <strong>Please select a school type.</strong><span class="asterisk">*</span>
+            </div>
+            <label>
+                <input type="radio" formControlName="schoolType" value="elementary" />
+                Elementary (Grades JK to 8)
+            </label>
+
+            <label>
+                <input type="radio" formControlName="schoolType" value="secondary" />
+                Secondary (Grades 9 to 12)
+            </label>
+
+            <ng-container *ngIf="studentForm.get('schoolType')?.value">
+                <div class="question-box">
+                    <strong>Please select the school your child attends.</strong><span class="asterisk">*</span>
+                </div>
+                <select formControlName="schoolList">
+                    <option value="" disabled>Select a school</option>
+                    <ng-container *ngIf="studentForm.get('schoolType')?.value == 'elementary'">
+                        <option value="adm">Admaston Public School</option>
+                        <option value="ajc">A. J. Charbonneau Public School</option>
+                        <option value="bch">Beachburg Public School</option>
+                        <option value="cds">Champlain Discovery Public School</option>
+                        <option value="cen">Central Public School</option>
+                        <option value="cob">Cobden District Public School</option>
+                        <option value="egn">Eganville District Public School</option>
+                        <option value="hrm">Herman Street Public School</option>
+                        <option value="hvw">Highview Public School</option>
+                        <option value="kil">Killaloe Public School</option>
+                        <option value="mes">Mackenzie Community School - Elementary</option>
+                        <option value="mve">Madawaska Valley District School - Elementary</option>
+                        <option value="pal">Palmer Rapids Public School</option>
+                        <option value="pvw">Pine View Public School</option>
+                        <option value="qel">Queen Elizabeth Public School</option>
+                        <option value="rci">Renfrew Collegiate Institute</option>
+                        <option value="rck">Rockwood Public School</option>
+                        <option value="ves">Valour JK to 12 School - Elementary</option>
+                        <option value="wzd">Walter Zadow Public School</option>
+                        <option value="wps">Whitney Public School</option>
+                    </ng-container>
+
+                    <ng-container *ngIf="studentForm.get('schoolType')?.value == 'secondary'">
+                        <option value="adh">Arnprior District High School</option>
+                        <option value="fhs">Fellowes High School</option>
+                        <option value="mhs">Mackenzie Community School - Secondary</option>
+                        <option value="mvs">Madawaska Valley District School - Secondary</option>
+                        <option value="ohs">Opeongo High School</option>
+                        <option value="rci">Renfrew Collegiate Institute</option>
+                        <option value="vhs">Valour JK to 12 School - Secondary</option>
+                    </ng-container>
+                </select>
+            </ng-container>
+        </div>
+
+        <div class="student-info">
+            <h3>Student Information</h3>
+            <p>If you have students in two or more different RCDSB schools, you will need to complete a separate form
+                for
+                each school.</p>
+            <div class="student-info-flex">
+                <ng-container *ngFor="let number of inputs">
+                    <div class="student-flex-object top-row-item">
+                        <label>First Name<span class="asterisk">*</span></label>
+                        <input type="text" formControlName="firstName{{number + 1}}" />
+                    </div>
+
+                    <div class="student-flex-object top-row-item">
+                        <label>Last Name<span class="asterisk">*</span></label>
+                        <input type="text" formControlName="lastName{{number + 1}}" />
+                    </div>
+
+                    <div class="student-flex-object top-row-item">
+                        <label>Grade Level<span class="asterisk">*</span></label>
+                        <select formControlName="gradeLevel{{number + 1}}">
+                            <option value="" disabled>Select grade level</option>
+                            <ng-container *ngIf="studentForm.get('schoolType')?.value == 'elementary'">
+                                <option value="JK">JK</option>
+                                <option value="SK">SK</option>
+                                <option value="1">Grade 1</option>
+                                <option value="2">Grade 2</option>
+                                <option value="3">Grade 3</option>
+                                <option value="4">Grade 4</option>
+                                <option value="5">Grade 5</option>
+                                <option value="6">Grade 6</option>
+                                <option value="7">Grade 7</option>
+                                <option value="8">Grade 8</option>
+                            </ng-container>
+
+                            <ng-container *ngIf="studentForm.get('schoolType')?.value == 'secondary'">
+                                <option value="9">Grade 9</option>
+                                <option value="10">Grade 10</option>
+                                <option value="11">Grade 11</option>
+                                <option value="12">Grade 12</option>
+                            </ng-container>
+                        </select>
+                    </div>
+
+                    <div class="student-flex-object bottom-row-item">
+                        <label>Date of Birth<span class="asterisk">*</span></label>
+                        <input type="date" formControlName="dateOfBirth{{number + 1}}" />
+                    </div>
+
+                    <div class="student-flex-object bottom-row-item">
+                        <label>Ontario Education Number (OEN)</label>
+                        <input type="text" formControlName="oen{{number + 1}}" />
+                    </div>
+
+                    <div class="student-flex-object bottom-row-item add-student">
+                        <button type="button" (click)="addAdditionalStudent()">Add additional student</button>
+                        <ng-container *ngIf="number > 0">
+                            <button type="button" (click)="removeAdditionalStudent()">Remove additional student</button>
+                        </ng-container>
+                    </div>
+                </ng-container>
+            </div>
+            <div class="changes-checkbox-container">
+                <div class="question-box">
+                    <strong>Please choose the change(s) required. Note: changing an address may affect eligibility to
+                        attend
+                        the current school.</strong><span class="asterisk">*</span>
+                </div>
+                <div class="changes-flex">
+                    <div class="change-item">
+                        <input type="checkbox" formControlName="newHomeAddress" />
+                        <label>New Home Address</label>
+                    </div>
+
+                    <div class="change-item">
+                        <input type="checkbox" formControlName="removePickUp" />
+                        <label>Remove existing pick up address (sitter)</label>
+                    </div>
+
+                    <div class="change-item">
+                        <input type="checkbox" formControlName="newPickUp" />
+                        <label>New Pick Up Address (sitter)</label>
+                    </div>
+
+                    <div class="change-item">
+                        <input type="checkbox" formControlName="removeDropOff" />
+                        <label>Remove existing drop off address (sitter)</label>
+                    </div>
+
+                    <div class="change-item">
+                        <input type="checkbox" formControlName="newDropOff" />
+                        <label>New Drop Off Address (sitter)</label>
+                    </div>
+
+                    <div class="change-item">
+                        <input type="checkbox" formControlName="other" />
+                        <label>Other</label>
+                    </div>
+                </div>
+            </div>
+            <div class="other-info">
+                <label>Please provide additional information:</label>
+                <textarea formControlName="otherInfo"></textarea>
+            </div>
+            <p>Personal information on this form is collected under the authority of the Education Act. The personal
+                information collected will be used for education, administration, and statistical purposes of the Board
+                and/or Ministries and Agencies of the Government of Ontario and the Government of Canada. Questions
+                about this collection of personal information should be directed to the Freedom of Information
+                Co-ordinator, 1270 Pembroke Street West, Pembroke, Ontario K8A 4G4 613-735-0151.</p>
+        </div>
+        <div class="buttons">
+            <button type="button" class="back" (click)="goBack()">Back</button>
+            <button type="submit" class="submit">Submit</button>
+        </div>
+    </form>
+</ng-container>

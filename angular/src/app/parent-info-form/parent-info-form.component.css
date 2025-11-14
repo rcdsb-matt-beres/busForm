@@ -1,0 +1,72 @@
+h2 {
+    margin: 0px 10px 10px;
+    font-size: 28pt;
+}
+
+p {
+    margin: 0px 25px 10px;
+    font-size: 12pt;
+}
+
+.asterisk {
+    color: red;
+}
+
+.p-last {
+    margin-top: 20px;
+}
+
+h3 {
+    margin: 20px 25px 10px;
+    font-size: 22pt;
+}
+
+.flex {
+    display: flex;
+    flex-wrap: wrap;
+    width: fit-content;
+}
+
+.input-div {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 50%;
+}
+
+.input-div label {
+    margin: 10px 25px 0px;
+    font-weight: bold;
+}
+
+.input-div input,
+.input-div select {
+    padding: 8px;
+    font-size: 16px;
+    /* margin: 5px 5px; */
+    margin: 5px 25px;
+    padding: 8px 4px;
+    box-sizing: border-box;
+}
+
+button {
+    float: right;
+    padding: 10px;
+    font-size: 12pt;
+    border: none;
+    border-radius: 5px;
+    background-image: linear-gradient(to top, #5978df, #7b8efa);
+    color: white;
+    margin: 15px 25px 0px auto;
+}
+
+button:hover {
+    cursor: pointer;
+    filter: brightness(90%);
+}
+
+@media screen and (max-width: 1000px) {
+    .flex {
+        flex-direction: column;
+        width: 100%;
+    }
+}

@@ -1,0 +1,67 @@
+<form id="parentForm" [formGroup]="parentForm" (ngSubmit)="onSubmit()">
+
+    <h2>Welcome</h2>
+    <p>Required fields are marked with asterisks (<span class="asterisk">*</span>)</p>
+    <p>This form should take approximately 5 minutes to complete. Please be prepared to provide your student's date of
+        birth and Ontario Education Number (OEN). The OEN can be found on your student's Ontario Report Card. If you do
+        not have your student's OEN, the school will contact you directly for further verification.</p>
+    <p class="p-last">Please fill in all the required fields (*), and when finished click the "Submit" button. You will
+        receive an
+        email confirmation once your submission has been sent (if not in your Inbox, remember to check your Spam
+        folder).</p>
+
+    <h3>Parent/Guardian Information</h3>
+    <div class="flex">
+        <div class="input-div">
+            <label>First Name<span class="asterisk">*</span></label>
+            <input type="text" formControlName="firstName" />
+        </div>
+
+        <div class="input-div">
+            <label>Last Name<span class="asterisk">*</span></label>
+            <input type="text" formControlName="lastName" />
+        </div>
+
+        <div class="input-div">
+            <label>Email Address<span class="asterisk">*</span></label>
+            <input type="text" formControlName="emailAddress" />
+        </div>
+
+        <div class="input-div">
+            <label>Alternate Email Address</label>
+            <input type="text" formControlName="alternateEmailAddress" />
+        </div>
+
+        <div class="input-div">
+            <label>Type of Telephone<span class="asterisk">*</span></label>
+            <select formControlName="typeOfTelephone">
+                <option value="" disabled>Select phone type</option>
+                <option value="home">Home</option>
+                <option value="cell">Cell</option>
+                <option value="business">Business</option>
+            </select>
+        </div>
+
+        <div class="input-div">
+            <label>Telephone Number<span class="asterisk">*</span></label>
+            <input type="text" formControlName="telephoneNumber" />
+        </div>
+
+        <div class="input-div">
+            <label>Type of Adittional Telephone</label>
+            <select formControlName="alternateTypeOfTelephone">
+                <option value="" disabled>Select phone type</option>
+                <option value="home">Home</option>
+                <option value="cell">Cell</option>
+                <option value="business">Business</option>
+            </select>
+        </div>
+
+        <div class="input-div">
+            <label>Additional Telephone Number</label>
+            <input type="text" formControlName="alternateTelephoneNumber" />
+        </div>
+
+        <button type="submit">Continue</button>
+    </div>
+</form>
