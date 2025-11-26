@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
-import { NgFor, NgIf } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FormService } from '../form.service';
 
 @Component({
   selector: 'app-parent-info-form',
-  imports: [NgFor, NgIf, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './parent-info-form.component.html',
   styleUrl: './parent-info-form.component.css'
 })

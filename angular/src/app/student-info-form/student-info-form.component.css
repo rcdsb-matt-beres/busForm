@@ -146,3 +146,19 @@ textarea {
     cursor: pointer;
     filter: brightness(90%);
 }
+
+@media (max-width: 1000px) {
+    .top-row-item {
+        flex-basis: 100%;
+    }
+
+    .bottom-row-item {
+        flex-basis: 100%;
+    }
+
+    .changes-checkbox-container {
+        display: block;
+        margin: 20px 25px;
+        width: auto;
+    }
+}
