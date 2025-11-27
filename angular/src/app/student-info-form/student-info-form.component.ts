@@ -1,9 +1,9 @@
 import { NgFor, NgIf } from '@angular/common';
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { FormService } from '../form.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-student-info-form',
@@ -15,7 +15,7 @@ export class StudentInfoFormComponent {
   studentForm = new FormGroup({});
   emailMap = new Map<string, string>();
 
-  constructor(private cdr: ChangeDetectorRef, public formService: FormService) {
+  constructor(private cdr: ChangeDetectorRef, public formService: FormService, private http: HttpClient) {
     this.studentForm.addControl('schoolType', new FormControl());
     this.studentForm.addControl('schoolList', new FormControl(""));
     this.studentForm.addControl('firstName1', new FormControl());
@@ -185,6 +185,10 @@ export class StudentInfoFormComponent {
     console.log(emailString);
 
     //Send email
+    let apiUrl = 'http://localhost:3000/api/send-email';
+    this.http.post(apiUrl, { address: "beresm@rcdsb.on.ca", body: emailString }).subscribe(resp => {
+      console.log(resp);
+    });
   }
 
   goBack() {
