@@ -3,7 +3,8 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { FormService } from '../form.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-student-info-form',
@@ -14,8 +15,9 @@ import { HttpClient } from '@angular/common/http';
 export class StudentInfoFormComponent {
   studentForm = new FormGroup({});
   emailMap = new Map<string, string>();
+  schoolMap = new Map<string, string>();
 
-  constructor(private cdr: ChangeDetectorRef, public formService: FormService, private http: HttpClient) {
+  constructor(private cdr: ChangeDetectorRef, public formService: FormService, private http: HttpClient, private router: Router) {
     this.studentForm.addControl('schoolType', new FormControl());
     this.studentForm.addControl('schoolList', new FormControl(""));
     this.studentForm.addControl('firstName1', new FormControl());
@@ -59,6 +61,35 @@ export class StudentInfoFormComponent {
     this.emailMap.set("vhs", "vhssec@rcdsb.on.ca");
     this.emailMap.set("wzd", "wzdsec@rcdsb.on.ca");
     this.emailMap.set("wps", "wpssec@rcdsb.on.ca");
+
+    //Add name for every school
+    this.schoolMap.set("adh", "Arnprior District High School");
+    this.schoolMap.set("ajc", "A. J. Charbonneau Public School");
+    this.schoolMap.set("adm", "Admaston Public School");
+    this.schoolMap.set("bch", "Beachburg Public School");
+    this.schoolMap.set("cen", "Central Public School");
+    this.schoolMap.set("cds", "Champlain Discovery Public School");
+    this.schoolMap.set("cob", "Cobden District Public School");
+    this.schoolMap.set("egn", "Eganville District Public School");
+    this.schoolMap.set("fhs", "Fellowes High School");
+    this.schoolMap.set("hrm", "Herman Street Public School");
+    this.schoolMap.set("hvw", "Highview Public School");
+    this.schoolMap.set("kil", "Killaloe Public School");
+    this.schoolMap.set("mcn", "Mackenzie Community School");
+    this.schoolMap.set("mes", "Mackenzie Community School - Elementary");
+    this.schoolMap.set("mhs", "Mackenzie Community School - Secondary");
+    this.schoolMap.set("mve", "Madawaska Valley District School - Elementary");
+    this.schoolMap.set("mvs", "Madawaska Valley District School - Secondary");
+    this.schoolMap.set("ohs", "Opeongo High School");
+    this.schoolMap.set("pal", "Palmer Rapids Public School");
+    this.schoolMap.set("pvw", "Pine View Public School");
+    this.schoolMap.set("qel", "Queen Elizabeth Public School");
+    this.schoolMap.set("rci", "Renfrew Collegiate Institute");
+    this.schoolMap.set("rck", "Rockwood Public School");
+    this.schoolMap.set("ves", "Valour JK to 12 School - Elementary");
+    this.schoolMap.set("vhs", "Valour JK to 12 School - Secondary");
+    this.schoolMap.set("wzd", "Walter Zadow Public School");
+    this.schoolMap.set("wps", "Whitney Public School");
   }
 
   numberOfStudents: BehaviorSubject<number> = new BehaviorSubject<number>(1);
@@ -86,7 +117,6 @@ export class StudentInfoFormComponent {
     this.studentForm.removeControl("dateOfBirth" + (currentCount + 1));
     this.studentForm.removeControl("oen" + (currentCount + 1));
   }
-
 
   onSubmit() {
     //Validations
@@ -146,7 +176,7 @@ export class StudentInfoFormComponent {
     emailString += "Alternate Type of Telephone: " + this.formService.alternateTypeOfTelephone.value + "\n";
     emailString += "Alternate Telephone Number: " + this.formService.alternateTelephoneNumber.value + "\n";
     emailString += "School Type: " + this.studentForm.get("schoolType")?.value + "\n";
-    emailString += "School Name: " + this.studentForm.get("schoolList")?.value + "\n\n";
+    emailString += "School Name: " + this.schoolMap.get(this.studentForm.get("schoolList")!.value) + "\n\n";
     emailString += "Student Information:\n";
     for (let i = 1; i <= totalStudents; i++) {
       emailString += "Student " + i + ":\n";
@@ -181,13 +211,17 @@ export class StudentInfoFormComponent {
     //Debug: show email content
     const schoolCode = this.studentForm.get("schoolList")?.value ?? "";
     const schoolEmail = this.emailMap.get(schoolCode) ?? "";
-    console.log("Email to be sent to: admissions@rcdsb.on.ca" + (schoolEmail ? ", " + schoolEmail : ""));
-    console.log(emailString);
 
     //Send email
     let apiUrl = 'http://localhost:3000/api/send-email';
-    this.http.post(apiUrl, { address: "beresm@rcdsb.on.ca", body: emailString }).subscribe(resp => {
-      console.log(resp);
+    // this.http.post(apiUrl, { address: "admissions@rcdsb.on.ca" + (schoolEmail ? "," + schoolEmail : "", body: emailString }).subscribe({
+    this.http.post(apiUrl, { address: "beresm@rcdsb.on.ca", body: emailString }).subscribe({
+      next: () => {
+        this.router.navigate(["/success"]);
+      },
+      error: (err: HttpErrorResponse) => {
+        alert("An error occured while sending your response, please try again.");
+      }
     });
   }
 
